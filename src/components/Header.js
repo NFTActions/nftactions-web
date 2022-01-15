@@ -9,9 +9,9 @@ const Header = ({ title }) => {
     }
 
     return (
-        <div>
+        <div className='container'>
             <h1 style={headingStyle}>{title}</h1> 
-            <h4 style={descriptionStyle}>NFTActions is the place to come to check the hottest NFT collections selling on OpenSea right now.</h4>
+            <h4 style={descriptionStyle}>The hottest NFT collections selling on OpenSea right now</h4>
             <Button color='DodgerBlue' text={buttonTitle} onClick={onClick}/>
         </div>
     )
