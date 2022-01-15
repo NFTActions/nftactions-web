@@ -2,15 +2,14 @@ import React from 'react'
 import { Bar } from 'react-chartjs-2'
 
 const state = {
-  labels: ['January', 'February', 'March',
-           'April', 'May'],
+  labels: ['Bored Ape Yacht Club', 'Cryptopunks', 'Deadfellaz', 'PhantaBear', 'CryptoSkulls', 'World of Women', 'Azuki', 'Mutant Ape Yacht Club', 'Doodles', 'The Sandbox'],
   datasets: [
     {
-      label: 'Rainfall',
-      backgroundColor: 'rgba(75,192,192,1)',
-      borderColor: 'rgba(0,0,0,1)',
+      label: 'No. of Sales',
+      backgroundColor: 'rgba(24,104,182,1)',
+      borderColor: 'rgba(0,0,0,0)',
       borderWidth: 2,
-      data: [65, 59, 80, 81, 56]
+      data: [300, 240, 220, 210, 150, 145, 130, 120, 50, 45]
     }
   ]
 }
@@ -22,13 +21,13 @@ const BarChart = () => {
         data={state}
         options={{
           title:{
-            display:true,
-            text:'Average Rainfall per month',
+            display: true,
+            text: 'Hottest collections in the past hour',
             fontSize:20
           },
           legend:{
-            display:true,
-            position:'right'
+            display: true,
+            position: 'right'
           }
         }}
       />
