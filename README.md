@@ -7,3 +7,7 @@ NFTActions is a real-time dashboard to discover the hottest NFT projects on Open
 ## How it's made
 
 NFTActions display a combination of data plots and charts on a React-based web dashboard. The data source is mainly OpenSea's Marketplace API's. A golang backend service periodically collects the data from OpenSea's API's, and stores it into a PostgreSQL database. When the web app makes a request, a second golang service reads from the database, transforms, and returns the requested data. (Backend repo: https://github.com/NFTActions/opensea-data-backend)
+
+## ETHGlobal public page + demo video
+
+Link: showcase.ethglobal.co/nfthack2022/nftactions
