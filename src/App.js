@@ -1,6 +1,5 @@
 import Header from './components/Header'
 import BarChart from './components/BarChart'
-import PlaceholderBlock from './components/PlaceholderBlock'
 import NFTTable from './components/NFTTable.js'
 
 import React, { useState, useEffect } from 'react'
