@@ -10,4 +10,4 @@ NFTActions display a combination of data plots and charts on a React-based web d
 
 ## ETHGlobal public page + demo video
 
-Link: showcase.ethglobal.co/nfthack2022/nftactions
+Link: https://showcase.ethglobal.com/nfthack2022/nftactions
