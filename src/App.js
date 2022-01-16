@@ -9,26 +9,37 @@ import axios from 'axios'
 const App = () => {
 
   const [chartData, setChartData] = useState({});
+  const saleCountCutoff = 1
+  const numberOfCollectionsToShow = 20
 
   const chart = () => {
-    let salaries = [];
     let names = [];
+    let saleCounts = [];
+    let totalSalesInGwei = [];
+    let imageUrls = [];
+    let collectionCreationDates = [];
 
     axios
-      .get("http://dummy.restapiexample.com/api/v1/employees")
+      .get("http://3.129.62.178:8080/v1/activity/summary")
       .then(res => {
         console.log(res)
-        for (const object of res.data.data) {
-          salaries.push(parseInt(object.employee_salary))
-          names.push(object.employee_name)
+        const filteredCollections = res.data.collections.filter(collection => collection.count > saleCountCutoff)
+
+        for (let i = 0; i < numberOfCollectionsToShow; i++) {
+          const collection = filteredCollections[i]
+          names.push(collection.name)
+          saleCounts.push(parseInt(collection.count))
+          totalSalesInGwei.push(parseInt(collection.total_sales_in_gwei))
+          imageUrls.push(collection.image_url)
+          collectionCreationDates.push(collection.created_date)
         }
         setChartData({
           labels: names,
           datasets: [
             {
-              label: "salaries",
-              data: salaries,
-              backgroundColor: ['rgba(24,104,182,1)'],
+              label: "Number of sales in 1 hour",
+              data: saleCounts,
+              backgroundColor: 'rgba(24,104,182,1)',
               borderWidth: 2
             }
           ]
@@ -38,7 +49,7 @@ const App = () => {
         console.log(err);
       })
 
-    console.log(salaries, names)
+    console.log(names, saleCounts, totalSalesInGwei, imageUrls, collectionCreationDates)
   }
 
   useEffect(() => {
