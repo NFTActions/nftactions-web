@@ -1,18 +1,5 @@
 import { Bar } from 'react-chartjs-2'
 
-// const state = {
-//   labels: ['Bored Ape Yacht Club', 'Cryptopunks', 'Deadfellaz', 'PhantaBear', 'CryptoSkulls', 'World of Women', 'Azuki', 'Mutant Ape Yacht Club', 'Doodles', 'The Sandbox'],
-//   datasets: [
-//     {
-//       label: 'No. of Sales',
-//       backgroundColor: 'rgba(24,104,182,1)',
-//       borderColor: 'rgba(0,0,0,0)',
-//       borderWidth: 2,
-//       data: [300, 240, 220, 210, 150, 145, 130, 120, 50, 45]
-//     }
-//   ]
-// }
-
 const BarChart = ({ chartData }) => {
   return (
     <div>
@@ -21,7 +8,7 @@ const BarChart = ({ chartData }) => {
         options={{
           title:{
             display: true,
-            text: 'Hottest collections in the past hour',
+            text: '20 Hottest Collections of the Past Hour',
             fontSize: 20
           },
           legend:{
