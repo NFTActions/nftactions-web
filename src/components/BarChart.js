@@ -8,7 +8,7 @@ const BarChart = ({ chartData }) => {
         options={{
           title:{
             display: true,
-            text: '20 Hottest Collections of the Past Hour',
+            text: '20 Most Sold Collections of the Past Hour',
             fontSize: 20
           },
           legend:{

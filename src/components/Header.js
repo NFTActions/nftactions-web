@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import Button from './Button'
 
 const buttonTitle = 'Refresh'
 
@@ -11,8 +10,8 @@ const Header = ({ title }) => {
     return (
         <div className='container'>
             <h1 style={headingStyle}>{title}</h1> 
-            <h4 style={descriptionStyle}>The hottest NFT collections selling on OpenSea right now</h4>
-            <Button color='DodgerBlue' text={buttonTitle} onClick={onClick}/>
+            <h4 style={descriptionStyle}>The hottest NFT collections on OpenSea right now</h4>
+            <h5 style={detailInfoStyle}>Data loaded &lt; 1 min ago</h5>
         </div>
     )
 }
@@ -26,11 +25,28 @@ Header.propTypes = {
 }
 
 const headingStyle = {
-    color: 'black'
+    color: 'black',
+    fontSize: 60,
+    textAlign: 'center',
+    fontWeight: 'bold'
 }
 
 const descriptionStyle = {
-    color: 'grey'
+    color: 'grey',
+    fontSize: 30,
+    textAlign: 'center'
+}
+
+const detailInfoStyle = {
+    color: 'grey',
+    fontSize: 20,
+    textAlign: 'center',
+    marginTop: 40 
+}
+
+const buttonStyle = {
+    color: 'DodgerBlue',
+    textAlign: 'center'
 }
 
 export default Header
