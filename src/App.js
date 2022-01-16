@@ -9,7 +9,8 @@ import axios from 'axios'
 const App = () => {
 
   const [chartData, setChartData] = useState({});
-  const saleCountCutoff = 20
+  const saleCountCutoff = 1
+  const numberOfCollectionsToShow = 20
 
   const chart = () => {
     let names = [];
@@ -23,7 +24,9 @@ const App = () => {
       .then(res => {
         console.log(res)
         const filteredCollections = res.data.collections.filter(collection => collection.count > saleCountCutoff)
-        for (const collection of filteredCollections) {
+
+        for (let i = 0; i < numberOfCollectionsToShow; i++) {
+          const collection = filteredCollections[i]
           names.push(collection.name)
           saleCounts.push(parseInt(collection.count))
           totalSalesInGwei.push(parseInt(collection.total_sales_in_gwei))
@@ -36,7 +39,7 @@ const App = () => {
             {
               label: "Number of sales in 1 hour",
               data: saleCounts,
-              backgroundColor: ['rgba(24,104,182,1)'],
+              backgroundColor: 'rgba(24,104,182,1)',
               borderWidth: 2
             }
           ]
