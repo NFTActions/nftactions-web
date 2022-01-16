@@ -1,4 +1,5 @@
 import {Table} from "react-bulma-components";
+import React from "react";
 
 const data = {
     header: ['Name',
@@ -10,12 +11,22 @@ const data = {
     ]
 }
 
-const NFTTable = () => {
+const renderHTML = (rawHTML) =>
+    React.createElement("div", { dangerouslySetInnerHTML: { __html: rawHTML } });
+
+
+const NFTTable = ({ tableData }) => {
+    // console.log(JSON.stringify(tableData));
+    let colNames = tableData.columns;
+    let rows = tableData.rows;
+    console.log(rows);
+    console.log(JSON.stringify(tableData.columns));
+
     return (
         <div>
             <Table hoverable={true} striped={true}>
                 <tbody>
-                {data.rows.map((row, index) => {
+                {rows.map((row, index) => {
                     return <tr key={index}>
                         {row.map((col, index) => {
                             return <td key={index}>{col}</td>
@@ -25,19 +36,11 @@ const NFTTable = () => {
                 </tbody>
                 <thead>
                     <tr>
-                        {data.header.map((item, index) => {
-                            return <th key={index}>{item}</th>
+                        {colNames.map((item, index) => {
+                            return <th key={index}>{renderHTML(item)}</th>
                         })}
                     </tr>
                 </thead>
-
-                {/*<tfoot>*/}
-                {/*    <tr>*/}
-                {/*        {data.header.map((item, index) => {*/}
-                {/*            return <th key={index}>{item}</th>*/}
-                {/*        })}*/}
-                {/*    </tr>*/}
-                {/*</tfoot>*/}
             </Table>
         </div>
     )
