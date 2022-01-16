@@ -1,6 +1,7 @@
 import Header from './components/Header'
 import BarChart from './components/BarChart'
 import PlaceholderBlock from './components/PlaceholderBlock'
+import NFTTable from './components/NFTTable.js'
 
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
@@ -48,7 +49,7 @@ const App = () => {
     <div className='container'>
       <Header title='NFTActions' />
       <div><BarChart chartData={chartData} /></div>      
-      <PlaceholderBlock text='This is where the table could be added' />
+      <div><NFTTable /></div>
     </div>
   )
 }
