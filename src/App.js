@@ -21,7 +21,7 @@ const App = () => {
     let tableRows = [];
 
     axios
-      .get("http://3.129.62.178:8080/v1/activity/summary")
+      .get("https://nftactions-go-backend.herokuapp.com/v1/activity/summary")
       .then(res => {
         // console.log(res)
         const filteredCollections = res.data.collections.filter(collection => collection.count > saleCountCutoff);
