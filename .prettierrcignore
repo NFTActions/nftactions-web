@@ -1,6 +1,5 @@
 # Ignore artifacts:
 build
-public
 
 # Ignore all HTML files:
 *.html
