@@ -1,18 +1,6 @@
 import {Table} from "react-bulma-components";
 import React from "react";
 
-const data = {
-	header: [
-		"Name",
-		"Number of Sales in the Past Hour",
-		"Total Sales Amount in the Past Hour (USD)",
-	],
-	rows: [
-		["Bored Apt Yacht Club", "123", "$123,456,789.13"],
-		["Cryptokitties", "3", "$2.23"],
-	],
-};
-
 const renderHTML = (rawHTML) =>
 	React.createElement("div", {dangerouslySetInnerHTML: {__html: rawHTML}});
 

@@ -1,12 +1,6 @@
 import PropTypes from "prop-types";
 
-const buttonTitle = "Refresh";
-
 const Header = ({title}) => {
-	const onClick = () => {
-		console.log("Click");
-	};
-
 	return (
 		<div className="container">
 			<h1 style={headingStyle}>{title}</h1>
@@ -44,11 +38,6 @@ const detailInfoStyle = {
 	fontSize: 20,
 	textAlign: "center",
 	marginTop: 40,
-};
-
-const buttonStyle = {
-	color: "DodgerBlue",
-	textAlign: "center",
 };
 
 export default Header;
