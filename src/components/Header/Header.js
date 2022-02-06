@@ -1,5 +1,6 @@
 import {faTelegram, faTwitter} from "@fortawesome/free-brands-svg-icons";
 import styled from "styled-components";
+
 import {NameAndLogo, Navigation, SocialMediaIcons, StyledIcon} from ".";
 
 const StyledHeader = styled.header`

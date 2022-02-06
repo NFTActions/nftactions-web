@@ -1,7 +1,8 @@
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
-import {baseUrl} from "../../Scripts/Constants";
+
 import {getData} from "../../Scripts/Axios/axiosRequests";
-import React, {useState, useEffect} from "react";
+import {baseUrl} from "../../Scripts/Constants";
 import {Board, TradingSummaryChart} from ".";
 
 const StyledDiv = styled.div`
