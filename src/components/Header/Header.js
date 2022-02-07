@@ -10,16 +10,14 @@ const StyledHeader = styled.header`
 	padding: 0.75rem 0;
 `;
 
-export const Header = () => {
-	return (
-		<StyledHeader>
-			<Navigation>
-				<NameAndLogo>Bento</NameAndLogo>
-				<SocialMediaIcons>
-					<StyledIcon icon={faTwitter} />
-					<StyledIcon icon={faTelegram} />
-				</SocialMediaIcons>
-			</Navigation>
-		</StyledHeader>
-	);
-};
+export const Header = () => (
+	<StyledHeader>
+		<Navigation>
+			<NameAndLogo>Bento</NameAndLogo>
+			<SocialMediaIcons>
+				<StyledIcon icon={faTwitter} />
+				<StyledIcon icon={faTelegram} />
+			</SocialMediaIcons>
+		</Navigation>
+	</StyledHeader>
+);

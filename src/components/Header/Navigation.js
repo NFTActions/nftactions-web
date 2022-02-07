@@ -11,6 +11,4 @@ const StyledNav = styled.nav`
 	padding-right: 0.75rem;
 `;
 
-export const Navigation = ({children}) => {
-	return <StyledNav>{children}</StyledNav>;
-};
+export const Navigation = ({children}) => <StyledNav>{children}</StyledNav>;

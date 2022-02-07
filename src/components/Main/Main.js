@@ -1,10 +1,8 @@
-import {SocialPicks, TradingPicks} from ".";
+import {SocialPicks, TradingPicks} from "./";
 
-export const Main = () => {
-	return (
-		<main>
-			<TradingPicks />
-			<SocialPicks></SocialPicks>
-		</main>
-	);
-};
+export const Main = () => (
+	<main>
+		<TradingPicks />
+		<SocialPicks></SocialPicks>
+	</main>
+);

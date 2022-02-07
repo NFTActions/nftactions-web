@@ -8,6 +8,4 @@ const StyledDiv = styled.div`
 	}
 `;
 
-export const SocialPicks = ({children}) => {
-	return <StyledDiv>{children}</StyledDiv>;
-};
+export const SocialPicks = ({children}) => <StyledDiv>{children}</StyledDiv>;
