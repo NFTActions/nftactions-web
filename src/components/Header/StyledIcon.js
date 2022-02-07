@@ -9,6 +9,4 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 	}
 `;
 
-export const StyledIcon = ({icon}) => {
-	return <StyledFontAwesomeIcon icon={icon} />;
-};
+export const StyledIcon = ({icon}) => <StyledFontAwesomeIcon icon={icon} />;

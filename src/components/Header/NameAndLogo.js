@@ -8,6 +8,4 @@ const StyledLink = styled.a`
 	}
 `;
 
-export const NameAndLogo = ({children}) => {
-	return <StyledLink>{children}</StyledLink>;
-};
+export const NameAndLogo = ({children}) => <StyledLink>{children}</StyledLink>;
