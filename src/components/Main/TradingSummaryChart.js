@@ -1,6 +1,8 @@
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import styled from "styled-components";
 
+import {StyledIcon} from "../../StyledComponents";
 import {BarChart} from "./";
 
 const StyledDiv = styled.div`
@@ -15,6 +17,8 @@ export const TradingSummaryChart = ({chartData, updateSelectedCollection}) => (
 				chartData={chartData}
 				updateSelectedCollection={updateSelectedCollection}
 			/>
-		) : null}
+		) : (
+			<StyledIcon icon={faSpinner} pulse />
+		)}
 	</StyledDiv>
 );

@@ -45,7 +45,7 @@ export const TradingPicks = () => {
 					label: "Number of sales",
 					data: saleCounts,
 					backgroundColor: "rgba(24,104,182,1)",
-					borderWidth: 2,
+					borderWidth: 1,
 				},
 			],
 		});

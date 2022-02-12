@@ -1,13 +1,15 @@
 import {faTelegram, faTwitter} from "@fortawesome/free-brands-svg-icons";
 import styled from "styled-components";
 
-import {NameAndLogo, Navigation, SocialMediaIcons, StyledIcon} from ".";
+import {StyledIcon} from "../../StyledComponents";
+import {NameAndLogo, Navigation, SocialMediaIcons} from ".";
 
 const StyledHeader = styled.header`
 	display: flex;
 	align-items: center;
 	position: relative;
-	padding: 0.75rem 0;
+	padding: 1rem 0;
+	background-color: #000;
 `;
 
 export const Header = () => (
@@ -15,8 +17,8 @@ export const Header = () => (
 		<Navigation>
 			<NameAndLogo>Bento</NameAndLogo>
 			<SocialMediaIcons>
-				<StyledIcon icon={faTwitter} />
-				<StyledIcon icon={faTelegram} />
+				<StyledIcon icon={faTwitter} iconcolor={"#0088cc"} />
+				<StyledIcon icon={faTelegram} iconcolor={"#1d9bf0"} />
 			</SocialMediaIcons>
 		</Navigation>
 	</StyledHeader>
