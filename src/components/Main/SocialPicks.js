@@ -1,11 +1,8 @@
 import styled from "styled-components";
 
 const StyledDiv = styled.div`
-	display: block;
-	text-decoration: none;
-	&:hover {
-		cursor: pointer;
-	}
+	display: flex;
+	background-color: #000;
 `;
 
 export const SocialPicks = ({children}) => <StyledDiv>{children}</StyledDiv>;
