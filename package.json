@@ -53,7 +53,8 @@
 		"@babel/preset-react": "^7.16.7",
 		"eslint-plugin-prettier": "^4.0.0",
 		"eslint-plugin-simple-import-sort": "^7.0.0",
-		"prettier": "2.5.1"
+		"prettier": "2.5.1",
+		"secure-env": "^1.2.0"
 	},
 	"proxy": "https://api.twitter.com/2/tweets/"
 }
