@@ -1,20 +1,39 @@
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import styled from "styled-components";
 
+import {StyledIcon} from "../../StyledComponents";
 import {BarChart} from "./";
 
 const StyledDiv = styled.div`
 	flex: 2;
-	margin: 10px;
+	margin-right: 10px;
+	margin-left: 5px;
+	border: 1px solid rgba(24, 104, 182, 1);
+	border-radius: 15px;
+	height: 100%;
+`;
+
+const StyledDivForChartHeader = styled.div`
+	font-size: 24px;
+	padding-top: 15px;
+	padding-left: 15px;
+	color: white;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+	background-color: rgba(24, 104, 182, 1);
 `;
 
 export const TradingSummaryChart = ({chartData, updateSelectedCollection}) => (
 	<StyledDiv>
+		<StyledDivForChartHeader>Trading Picks</StyledDivForChartHeader>
 		{chartData ? (
 			<BarChart
 				chartData={chartData}
 				updateSelectedCollection={updateSelectedCollection}
 			/>
-		) : null}
+		) : (
+			<StyledIcon icon={faSpinner} pulse />
+		)}
 	</StyledDiv>
 );

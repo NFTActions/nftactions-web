@@ -1,9 +1,16 @@
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
+
+import {StyledIcon} from "../../StyledComponents";
 import {CollectionRandAndName, DetailsAndImg} from "./";
 
 const StyledDiv = styled.div`
 	flex: 1;
-	background-color: aliceblue;
+	margin-right: 5px;
+	background-color: #000;
+	border: 1px solid rgba(24, 104, 182, 1);
+	border-radius: 15px;
+	height: 100%;
 `;
 
 const StyledDivForWrapper = styled.div`
@@ -15,13 +22,26 @@ const DetailsWrapper = ({children}) => (
 	<StyledDivForWrapper>{children}</StyledDivForWrapper>
 );
 
+const StyledDivForDetailsHeader = styled.div`
+	font-size: 24px;
+	padding-top: 15px;
+	padding-left: 15px;
+	color: white;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+	background-color: rgba(24, 104, 182, 1);
+`;
+
 export const Board = ({currentCollection, rank}) => (
 	<StyledDiv>
 		{currentCollection ? (
 			<DetailsWrapper>
+				<StyledDivForDetailsHeader>Collection</StyledDivForDetailsHeader>
 				<CollectionRandAndName rank={rank} name={currentCollection.name} />
 				<DetailsAndImg currentCollection={currentCollection} />
 			</DetailsWrapper>
-		) : null}
+		) : (
+			<StyledIcon icon={faSpinner} pulse />
+		)}
 	</StyledDiv>
 );

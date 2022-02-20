@@ -7,6 +7,7 @@ import {Board, TradingSummaryChart} from "./";
 
 const StyledDiv = styled.div`
 	display: flex;
+	height: 480px;
 `;
 
 export const TradingPicks = () => {
@@ -28,6 +29,7 @@ export const TradingPicks = () => {
 			setCollections(filteredCollections);
 			setCurrentCollectionIndex(0);
 		}
+
 		fetchData();
 	}, []);
 
@@ -45,7 +47,7 @@ export const TradingPicks = () => {
 					label: "Number of sales",
 					data: saleCounts,
 					backgroundColor: "rgba(24,104,182,1)",
-					borderWidth: 2,
+					borderWidth: 1,
 				},
 			],
 		});
