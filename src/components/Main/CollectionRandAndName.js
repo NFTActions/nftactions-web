@@ -3,6 +3,17 @@ import styled from "styled-components";
 const StyledDiv = styled.div`
 	display: flex;
 	padding: 3px;
+	justify-content: space-between;
+`;
+
+const StyledWrapperForRankAndName = styled.div`
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	margin: 6px;
+	padding: 3px;
+	border: 1px solid rgba(24, 104, 182, 1);
+	border-radius: 9px;
 `;
 
 const StyledDivForRank = styled.div`
@@ -24,8 +35,7 @@ const CollectionLogo = styled.div`
 	width: 60px;
 	height: 60px;
 	border-radius: 50%;
-	margin-top: 5px;
-	margin-right: 5px;
+	margin: 15px;
 	text-align: center;
 `;
 
@@ -41,8 +51,10 @@ const CollectionName = ({name}) => <StyledDivForName>{name}</StyledDivForName>;
 
 export const CollectionRandAndName = ({rank, name}) => (
 	<StyledDiv>
-		<CollectionRank rank={rank} />
-		<CollectionName name={name} />
+		<StyledWrapperForRankAndName>
+			<CollectionRank rank={rank} />
+			<CollectionName name={name} />
+		</StyledWrapperForRankAndName>
 		<CollectionLogo>logo</CollectionLogo>
 	</StyledDiv>
 );

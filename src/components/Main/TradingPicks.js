@@ -1,46 +1,28 @@
 import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 
-import {getData} from "../../Scripts/Axios/axiosRequests";
-import {baseUrl} from "../../Scripts/Constants";
 import {Board, TradingSummaryChart} from "./";
 
 const StyledDiv = styled.div`
 	display: flex;
-	height: 480px;
+	height: 460px;
 `;
 
-export const TradingPicks = () => {
-	const [chartData, setChartData] = useState(null);
-	const [collections, setCollections] = useState(null);
+export const TradingPicks = ({collections}) => {
 	const [currentCollectionIndex, setCurrentCollectionIndex] = useState(0);
-	const saleCountCutoff = 1;
-	const numberOfCollectionsToShow = 20;
 
 	useEffect(() => {
-		async function fetchData() {
-			const response = await getData(`${baseUrl}v1/activity/summary`);
-			const filteredCollections = response.collections
-				.filter(
-					(responseCollection) => responseCollection.count > saleCountCutoff
-				)
-				.slice(0, numberOfCollectionsToShow);
-			getChartData(filteredCollections);
-			setCollections(filteredCollections);
-			setCurrentCollectionIndex(0);
-		}
-
-		fetchData();
+		setCurrentCollectionIndex(0);
 	}, []);
 
-	const getChartData = (filteredCollections) => {
-		const names = filteredCollections.map(
+	const getChartData = () => {
+		const names = collections.map(
 			(filteredCollection) => filteredCollection.name
 		);
-		const saleCounts = filteredCollections.map((filteredCollection) =>
+		const saleCounts = collections.map((filteredCollection) =>
 			parseInt(filteredCollection.count)
 		);
-		setChartData({
+		return {
 			labels: names,
 			datasets: [
 				{
@@ -50,12 +32,14 @@ export const TradingPicks = () => {
 					borderWidth: 1,
 				},
 			],
-		});
+		};
 	};
 
 	const updateSelectedCollection = (index) => {
 		if (index !== currentCollectionIndex) setCurrentCollectionIndex(index);
 	};
+
+	const chartData = getChartData();
 
 	return (
 		<StyledDiv>
