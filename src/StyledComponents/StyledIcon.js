@@ -4,7 +4,7 @@ import styled from "styled-components";
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 	color: ${(props) => props.iconcolor || "palevioletred"};
 	margin: 3px;
-	padding-left: 15px;
+	padding: 15px;
 	&:hover {
 		cursor: pointer;
 	}

@@ -9,7 +9,7 @@ const StyledDiv = styled.div`
 	margin-right: 5px;
 	background-color: #000;
 	border: 1px solid rgba(24, 104, 182, 1);
-	border-radius: 15px;
+	border-radius: 9px;
 	height: 100%;
 `;
 
@@ -27,8 +27,8 @@ const StyledDivForDetailsHeader = styled.div`
 	padding-top: 15px;
 	padding-left: 15px;
 	color: white;
-	border-top-left-radius: 15px;
-	border-top-right-radius: 15px;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
 	background-color: rgba(24, 104, 182, 1);
 `;
 

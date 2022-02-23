@@ -1,4 +1,9 @@
 import {Bar} from "react-chartjs-2";
+import styled from "styled-components";
+
+const StyledBar = styled(Bar)`
+	height: 100%;
+`;
 
 export const BarChart = ({chartData, updateSelectedCollection}) => {
 	const onClick = (elements) => {
@@ -9,7 +14,7 @@ export const BarChart = ({chartData, updateSelectedCollection}) => {
 		}
 	};
 	return (
-		<Bar
+		<StyledBar
 			data={chartData}
 			options={{
 				title: {
