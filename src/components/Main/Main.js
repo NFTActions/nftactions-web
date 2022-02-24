@@ -22,7 +22,7 @@ export const Main = () => {
 	const [data, setData] = useState({data: []});
 	const [collections, setCollections] = useState([]);
 	const saleCountCutoff = 1;
-	const numberOfCollectionsToShow = 20;
+	const numberOfCollectionsToShow = 10;
 
 	useEffect(() => {
 		async function fetchData() {
@@ -46,19 +46,26 @@ export const Main = () => {
 					)
 				)
 			).then((responses) => {
-				const data = responses
-					.filter((response) => response?.data)
-					.map((response) => {
-						return response.data[0];
-					});
-				if (data.length < 5) {
-					const moreData = responses
-						.filter((response) => response?.data)[0]
-						.data.slice(1, 5 - data.length + 1);
-					setData([...data, ...moreData]);
-				} else {
-					setData(data);
+				const data = responses.filter(
+					(response) => response?.data && Array.isArray(response?.data)
+				);
+				let tweetsSet = new Set();
+				while (tweetsSet.size < 5) {
+					let tweetIndex = 0;
+					while (tweetIndex < data[0].data.length) {
+						for (
+							let tweetArrayIndex = 0;
+							tweetArrayIndex < data.length;
+							tweetArrayIndex++
+						) {
+							tweetsSet.add(data[tweetArrayIndex].data[tweetIndex]);
+							if (tweetsSet.size >= 5) break;
+						}
+						tweetIndex++;
+						if (tweetsSet.size >= 5) break;
+					}
 				}
+				setData([...tweetsSet]);
 			});
 		}
 
