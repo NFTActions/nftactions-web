@@ -24,14 +24,11 @@ const StyledDivForChartHeader = styled.div`
 	background-color: rgba(24, 104, 182, 1);
 `;
 
-export const TradingSummaryChart = ({chartData, updateSelectedCollection}) => (
+export const TradingSummaryChart = (props) => (
 	<StyledDiv>
 		<StyledDivForChartHeader>Trading Picks</StyledDivForChartHeader>
-		{chartData ? (
-			<BarChart
-				chartData={chartData}
-				updateSelectedCollection={updateSelectedCollection}
-			/>
+		{props.chartData ? (
+			<BarChart {...props} />
 		) : (
 			<StyledIcon icon={faSpinner} pulse />
 		)}

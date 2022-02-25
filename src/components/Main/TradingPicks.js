@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 
+import {chartLabelCutOff} from "../../Scripts/Constants";
 import {Board, TradingSummaryChart} from "./";
 
 const StyledDiv = styled.div`
@@ -16,9 +17,11 @@ export const TradingPicks = ({collections}) => {
 	}, []);
 
 	const getChartData = () => {
-		const names = collections.map(
-			(filteredCollection) => filteredCollection.name
-		);
+		const names = collections.map((filteredCollection) => {
+			if (filteredCollection.name.length > chartLabelCutOff)
+				return `${filteredCollection.name.slice(0, chartLabelCutOff)}...`;
+			return filteredCollection.name;
+		});
 		const saleCounts = collections.map((filteredCollection) =>
 			parseInt(filteredCollection.count)
 		);
@@ -46,6 +49,7 @@ export const TradingPicks = ({collections}) => {
 			<TradingSummaryChart
 				chartData={chartData}
 				updateSelectedCollection={updateSelectedCollection}
+				collectionNames={collections.map((collection) => collection.name)}
 			/>
 			<Board
 				currentCollection={
