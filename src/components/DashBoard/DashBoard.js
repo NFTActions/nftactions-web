@@ -9,7 +9,6 @@ import {StyledIcon} from "../../StyledComponents";
 import {SocialPicks, TradingPicks} from ".";
 
 const StyledMain = styled.main`
-	background-color: #000;
 	height: 100%;
 `;
 
@@ -20,13 +19,14 @@ const StyleTweetWrapper = styled.div`
 
 export const DashBoard = () => {
 	const [data, setData] = useState({data: []});
+	const [whitelistMintTweets, setWhitelistMintTweets] = useState([]);
 	const [collections, setCollections] = useState([]);
 	const saleCountCutoff = 1;
 	const numberOfCollectionsToShow = 10;
 
 	useEffect(() => {
 		async function fetchData() {
-			//mock collection summary will be placed here
+			// mock collection summary will be placed here
 			const response = await getData(`${baseUrl}v1/activity/summary`);
 			const filteredCollections = response.collections
 				.filter(
@@ -67,6 +67,11 @@ export const DashBoard = () => {
 				}
 				setData([...tweetsSet]);
 			});
+
+			const whitelistMintTweetsResponse = await getTweets(
+				`/2/tweets/search/recent?query="whitelist mint"&tweet.fields=author_id,created_at,entities,geo,in_reply_to_user_id,lang,possibly_sensitive,referenced_tweets,source`
+			);
+			setWhitelistMintTweets([...whitelistMintTweetsResponse.data.slice(0, 5)]);
 		}
 
 		fetchData();
@@ -79,7 +84,7 @@ export const DashBoard = () => {
 			) : (
 				<StyledIcon icon={faSpinner} pulse />
 			)}
-			<SocialPicks>
+			<SocialPicks marginTop="30px">
 				{data?.length ? (
 					data
 						.filter((tweet, index) => index <= 4)
@@ -87,11 +92,36 @@ export const DashBoard = () => {
 							<StyleTweetWrapper key={tweet.id}>
 								<TwitterTweetEmbed
 									tweetId={tweet.id}
-									options={{height: 200}}
+									options={{
+										conversation: "none",
+										width: 250,
+										cards: "hidden",
+										theme: "dark",
+									}}
 									placeholder={<StyledIcon icon={faSpinner} pulse />}
 								/>
 							</StyleTweetWrapper>
 						))
+				) : (
+					<StyledIcon icon={faSpinner} pulse />
+				)}
+			</SocialPicks>
+			<SocialPicks marginTop="0">
+				{whitelistMintTweets?.length ? (
+					whitelistMintTweets.map((tweet) => (
+						<StyleTweetWrapper key={tweet.id}>
+							<TwitterTweetEmbed
+								tweetId={tweet.id}
+								options={{
+									conversation: "none",
+									width: 250,
+									cards: "hidden",
+									theme: "dark",
+								}}
+								placeholder={<StyledIcon icon={faSpinner} pulse />}
+							/>
+						</StyleTweetWrapper>
+					))
 				) : (
 					<StyledIcon icon={faSpinner} pulse />
 				)}

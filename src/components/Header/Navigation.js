@@ -5,8 +5,8 @@ const StyledNav = styled.nav`
 	width: 100%;
 	align-items: center;
 	justify-content: space-between;
-	margin-left: auto;
-	margin-right: auto;
+	margin-left: 20px;
+	margin-right: 20px;
 	padding-left: 0.75rem;
 	padding-right: 0.75rem;
 `;

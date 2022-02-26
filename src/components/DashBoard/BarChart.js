@@ -2,6 +2,7 @@ import {Bar} from "react-chartjs-2";
 import styled from "styled-components";
 
 import {chartLabelCutOff} from "../../Scripts/Constants";
+import {bentoBoxRed} from "../../StyledComponents/Constants";
 
 const StyledBar = styled(Bar)`
 	height: 100%;
@@ -48,6 +49,13 @@ export const BarChart = ({
 					callbacks: {
 						title(tooltipItem) {
 							return getToolTips(tooltipItem);
+						},
+					},
+				},
+				plugins: {
+					legend: {
+						labels: {
+							color: `${bentoBoxRed}`,
 						},
 					},
 				},
