@@ -1,4 +1,5 @@
 import {faTelegram, faTwitter} from "@fortawesome/free-brands-svg-icons";
+import {Link} from "react-router-dom";
 import styled from "styled-components";
 
 import {StyledIcon} from "../../StyledComponents";
@@ -27,7 +28,7 @@ const StyledSecondaryNav = styled.div`
 	display: flex;
 `;
 
-const StyledLink = styled.a`
+const StyledLink = styled(Link)`
 	display: flex;
 	text-decoration: none;
 	color: #fff;
@@ -47,8 +48,8 @@ export const Header = () => (
 				Bento
 			</NameAndLogo>
 			<StyledSecondaryNav>
-				<StyledLink>Dashboard</StyledLink>
-				<StyledLink>About</StyledLink>
+				<StyledLink to="/">Dashboard</StyledLink>
+				<StyledLink to="/about">About</StyledLink>
 			</StyledSecondaryNav>
 			<SocialMediaIcons>
 				<StyledIcon icon={faTwitter} iconcolor={"#0088cc"} />

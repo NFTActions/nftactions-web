@@ -6,7 +6,7 @@ import styled from "styled-components";
 import {getData, getTweets} from "../../Scripts/Axios/axiosRequests";
 import {baseUrl} from "../../Scripts/Constants";
 import {StyledIcon} from "../../StyledComponents";
-import {SocialPicks, TradingPicks} from "./";
+import {SocialPicks, TradingPicks} from ".";
 
 const StyledMain = styled.main`
 	background-color: #000;
@@ -18,7 +18,7 @@ const StyleTweetWrapper = styled.div`
 	overflow: auto;
 `;
 
-export const Main = () => {
+export const DashBoard = () => {
 	const [data, setData] = useState({data: []});
 	const [collections, setCollections] = useState([]);
 	const saleCountCutoff = 1;
@@ -26,7 +26,7 @@ export const Main = () => {
 
 	useEffect(() => {
 		async function fetchData() {
-			// mock collection summary will be placed here
+			//mock collection summary will be placed here
 			const response = await getData(`${baseUrl}v1/activity/summary`);
 			const filteredCollections = response.collections
 				.filter(

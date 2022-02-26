@@ -1,8 +1,8 @@
 import React from "react";
+import {Route, Routes} from "react-router-dom";
 import styled from "styled-components";
 
-import {Header} from "./components/Header";
-import {Main} from "./components/Main";
+import {About, DashBoard, Header} from "./components";
 
 const StyledDiv = styled.div`
 	height: 100vh;
@@ -11,7 +11,10 @@ const StyledDiv = styled.div`
 const App = () => (
 	<StyledDiv>
 		<Header />
-		<Main />
+		<Routes>
+			<Route exact path="/" element={<DashBoard />} />
+			<Route path="/about" element={<About />} />
+		</Routes>
 	</StyledDiv>
 );
 
