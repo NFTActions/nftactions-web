@@ -2,11 +2,13 @@ import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 
 import {chartLabelCutOff} from "../../Scripts/Constants";
+import {bentoBoxRed} from "../../StyledComponents/Constants";
 import {Board, TradingSummaryChart} from ".";
 
 const StyledDiv = styled.div`
 	display: flex;
 	height: 460px;
+	padding-bottom: 20px;
 `;
 
 export const TradingPicks = ({collections}) => {
@@ -31,7 +33,7 @@ export const TradingPicks = ({collections}) => {
 				{
 					label: "Number of sales",
 					data: saleCounts,
-					backgroundColor: "rgba(24,104,182,1)",
+					backgroundColor: `${bentoBoxRed}`,
 					borderWidth: 1,
 				},
 			],

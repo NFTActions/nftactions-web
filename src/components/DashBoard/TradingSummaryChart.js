@@ -3,15 +3,17 @@ import React from "react";
 import styled from "styled-components";
 
 import {StyledIcon} from "../../StyledComponents";
+import {boardBackgroundColor} from "../../StyledComponents/Constants";
 import {BarChart} from ".";
 
 const StyledDiv = styled.div`
-	flex: 2;
+	flex: 3;
 	margin-right: 10px;
 	margin-left: 5px;
-	border: 1px solid rgba(24, 104, 182, 1);
 	border-radius: 9px;
 	height: 100%;
+	margin: 20px;
+	background-color: ${boardBackgroundColor};
 `;
 
 const StyledDivForChartHeader = styled.div`
@@ -21,7 +23,7 @@ const StyledDivForChartHeader = styled.div`
 	color: white;
 	border-top-left-radius: 8px;
 	border-top-right-radius: 8px;
-	background-color: rgba(24, 104, 182, 1);
+	background-color: ${boardBackgroundColor};
 `;
 
 export const TradingSummaryChart = (props) => (

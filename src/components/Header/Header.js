@@ -3,6 +3,10 @@ import {Link} from "react-router-dom";
 import styled from "styled-components";
 
 import {StyledIcon} from "../../StyledComponents";
+import {
+	bentoBoxRed,
+	boardBackgroundColor,
+} from "../../StyledComponents/Constants";
 import {NameAndLogo, Navigation, SocialMediaIcons} from ".";
 
 const StyledHeader = styled.header`
@@ -10,11 +14,11 @@ const StyledHeader = styled.header`
 	align-items: center;
 	position: relative;
 	padding: 1rem 0;
-	background-color: #000;
+	background-color: ${boardBackgroundColor};
 `;
 
 const CollectionLogo = styled.div`
-	background-color: rgba(24, 104, 182, 1);
+	background-color: ${bentoBoxRed};
 	width: 60px;
 	height: 60px;
 	border-radius: 50%;

@@ -2,13 +2,14 @@ import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 
 import {StyledIcon} from "../../StyledComponents";
+import {boardBackgroundColor} from "../../StyledComponents/Constants";
 import {CollectionRandAndName, DetailsAndImg} from ".";
 
 const StyledDiv = styled.div`
-	flex: 1;
-	margin-right: 5px;
-	background-color: #000;
-	border: 1px solid rgba(24, 104, 182, 1);
+	flex: 2;
+	margin: 20px;
+	margin-left: 0;
+	background-color: ${boardBackgroundColor};
 	border-radius: 9px;
 	height: 100%;
 `;
@@ -29,7 +30,6 @@ const StyledDivForDetailsHeader = styled.div`
 	color: white;
 	border-top-left-radius: 8px;
 	border-top-right-radius: 8px;
-	background-color: rgba(24, 104, 182, 1);
 `;
 
 export const Board = ({currentCollection, rank}) => (

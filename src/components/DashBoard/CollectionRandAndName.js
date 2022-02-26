@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import {bentoBoxRed} from "../../StyledComponents/Constants";
+
 const StyledDiv = styled.div`
 	display: flex;
 	padding: 3px;
@@ -12,18 +14,17 @@ const StyledWrapperForRankAndName = styled.div`
 	flex: 1;
 	margin: 6px;
 	padding: 3px;
-	border: 1px solid rgba(24, 104, 182, 1);
+	border: 2px solid ${bentoBoxRed};
 	border-radius: 9px;
 `;
 
 const StyledDivForRank = styled.div`
 	width: 5rem;
 	margin: 5px;
-	font-size: 25px;
+	font-size: 20px;
 	font-family: "Poppins-Medium";
 	color: #fff;
-	text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #0fa,
-		0 0 82px #0fa;
+	text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff;
 `;
 
 const CollectionRank = ({rank}) => (
@@ -31,7 +32,7 @@ const CollectionRank = ({rank}) => (
 );
 
 const CollectionLogo = styled.div`
-	background-color: rgba(24, 104, 182, 1);
+	background-color: ${bentoBoxRed};
 	width: 60px;
 	height: 60px;
 	border-radius: 50%;
@@ -42,7 +43,7 @@ const CollectionLogo = styled.div`
 const StyledDivForName = styled.div`
 	flex: 4;
 	margin: 5px;
-	font-size: 25px;
+	font-size: 20px;
 	color: #fff;
 	text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #0fa;
 `;
