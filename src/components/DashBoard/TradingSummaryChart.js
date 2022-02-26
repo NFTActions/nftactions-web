@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 
 import {StyledIcon} from "../../StyledComponents";
-import {BarChart} from "./";
+import {BarChart} from ".";
 
 const StyledDiv = styled.div`
 	flex: 2;

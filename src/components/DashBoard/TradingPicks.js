@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 
 import {chartLabelCutOff} from "../../Scripts/Constants";
-import {Board, TradingSummaryChart} from "./";
+import {Board, TradingSummaryChart} from ".";
 
 const StyledDiv = styled.div`
 	display: flex;

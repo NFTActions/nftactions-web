@@ -2,7 +2,7 @@ import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 
 import {StyledIcon} from "../../StyledComponents";
-import {CollectionRandAndName, DetailsAndImg} from "./";
+import {CollectionRandAndName, DetailsAndImg} from ".";
 
 const StyledDiv = styled.div`
 	flex: 1;
