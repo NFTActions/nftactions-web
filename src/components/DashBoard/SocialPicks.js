@@ -7,6 +7,7 @@ const StyledDiv = styled.div`
 	background-color: ${boardBackgroundColor};
 	overflow: auto;
 	margin-top: ${(props) => props.marginTop};
+	flex-direction: column;
 `;
 
 export const SocialPicks = ({children, marginTop}) => (
