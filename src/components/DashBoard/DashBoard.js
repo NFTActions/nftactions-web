@@ -39,7 +39,6 @@ export const DashBoard = () => {
 	const tweetsWhitelistPerFetch = 100;
 	const [currentAllTweets, setCurrentAllTweets] = useState([]);
 	const [currentNextTokens, setCurrentNextTokens] = useState("");
-	const [currentPage, setCurrentPage] = useState(initialPage);
 	const tweetsPerFetch = 20;
 	const [tweetArrayIndex, setTweetArrayIndex] = useState(0);
 	const [tweetIndex, setTweetIndex] = useState(0);
@@ -526,33 +525,32 @@ export const DashBoard = () => {
 
 			const names = getCollectionNames(filteredCollections);
 			// mock tweets will be placed here
-			await Promise.all(names.map((name) => getTweetsByQuery(name, 10))).then(
-				(responses) => {
-					const data = responses.filter(
-						(response) => response?.data && Array.isArray(response?.data)
-					);
+			await Promise.all(
+				names.map((name) => getTweetsByQuery(name, tweetsPerFetch))
+			).then((responses) => {
+				const data = responses.filter(
+					(response) => response?.data && Array.isArray(response?.data)
+				);
 
-					const tokens = data.map((data) => data.meta?.next_token);
-					setCurrentNextTokens([...tokens]);
+				const tokens = data.map((data) => data.meta?.next_token);
+				setCurrentNextTokens([...tokens]);
 
-					const arraysOfTweetsArray = [...data.map((data) => data.data)];
+				const arraysOfTweetsArray = [...data.map((data) => data.data)];
 
-					setCurrentAllTweets(arraysOfTweetsArray);
-					const tweetsSet = removeTweetDuplicates(arraysOfTweetsArray);
+				setCurrentAllTweets(arraysOfTweetsArray);
+				const tweetsSet = removeTweetDuplicates(arraysOfTweetsArray);
 
-					setData([...tweetsSet]);
-				}
+				setData([...tweetsSet]);
+			});
+
+			const whitelistMintTweetsResponse = await getTweetsByQuery(
+				"whitelist mint",
+				tweetsWhitelistPerFetch
 			);
-
-			// const whitelistMintTweetsResponse = await getTweetsByQuery(
-			// 	"whitelist mint",
-			// 	tweetsWhitelistPerFetch
-
-			// );
-			//setCurrentAllTweetsWhitelist([...whitelistMintTweetsResponse.data]);
-			// setCurrentNextTokenWhitelist(
-			// 	whitelistMintTweetsResponse.meta?.next_token
-			// );
+			setCurrentAllTweetsWhitelist([...whitelistMintTweetsResponse.data]);
+			setCurrentNextTokenWhitelist(
+				whitelistMintTweetsResponse.meta?.next_token
+			);
 		}
 
 		fetchData();
@@ -562,13 +560,18 @@ export const DashBoard = () => {
 		return currentCollections.slice(0, 5).map((collection) => collection.name);
 	};
 
-	const removeTweetDuplicates = (data) => {
+	const removeTweetDuplicates = (
+		data,
+		currentExit = exit,
+		currentTweetIndex = tweetIndex,
+		currentTweetArrayIndex = tweetArrayIndex
+	) => {
 		let tweetsSet = new Set();
-		let localExit = exit;
+		let localExit = currentExit;
 		const totalTweetsCount = data.flat().length;
 		console.log(totalTweetsCount);
-		let localTweetIndex = tweetIndex;
-		let localTweetArrayIndex = tweetArrayIndex;
+		let localTweetIndex = currentTweetIndex;
+		let localTweetArrayIndex = currentTweetArrayIndex;
 		const arraysOfTweetArrayLength = data.length;
 		const tweetsLength = data?.[localTweetArrayIndex]?.length;
 
@@ -619,7 +622,10 @@ export const DashBoard = () => {
 	};
 
 	const refreshWhitelistTweets = async () => {
-		if ((currentPageForWhitelist + 1) * tweetsPerSection >= 10) {
+		if (
+			(currentPageForWhitelist + 1) * tweetsPerSection >=
+			tweetsWhitelistPerFetch
+		) {
 			if (currentNextTokenWhitelist) {
 				const whitelistMintTweetsResponse = await getTweetsByQuery(
 					"whitelist mint",
@@ -641,31 +647,25 @@ export const DashBoard = () => {
 
 	const refreshTweets = async () => {
 		if (exit >= currentAllTweets.flat().length) {
-			setData([]);
-			setCurrentAllTweets([]);
-			setExit(0);
-			setTweetArrayIndex(0);
-			setTweetIndex(0);
-			console.log("fetch");
 			if (currentNextTokens.some((token) => !!token)) {
 				const names = getCollectionNames(collections);
-				await Promise.all(names.map((name) => getTweetsByQuery(name, 20))).then(
-					(responses) => {
-						const data = responses.filter(
-							(response) => response?.data && Array.isArray(response?.data)
-						);
+				await Promise.all(
+					names.map((name) => getTweetsByQuery(name, tweetsPerFetch))
+				).then((responses) => {
+					const data = responses.filter(
+						(response) => response?.data && Array.isArray(response?.data)
+					);
+					console.log(data);
+					const tokens = data.map((data) => data.meta?.next_token);
+					setCurrentNextTokens([tokens]);
 
-						const tokens = data.map((data) => data.meta?.next_token);
-						setCurrentNextTokens([tokens]);
+					const arraysOfTweetsArray = [...data.map((data) => data.data)];
 
-						const arraysOfTweetsArray = [...data.map((data) => data.data)];
+					setCurrentAllTweets(arraysOfTweetsArray);
 
-						setCurrentAllTweets(arraysOfTweetsArray);
-
-						const tweetsSet = removeTweetDuplicates(arraysOfTweetsArray);
-						setData([...tweetsSet]);
-					}
-				);
+					const tweetsSet = removeTweetDuplicates(arraysOfTweetsArray, 0, 0, 0);
+					setData([...tweetsSet]);
+				});
 			} else {
 				console.log("There is no more tweets");
 			}
@@ -690,30 +690,28 @@ export const DashBoard = () => {
 							alignself="flex-end"
 							onClick={refreshTweets}
 						/>
-						{/* <TweetsSection>
-							{data
-								.filter((tweet, index) => index <= 1)
-								.map((tweet) => (
-									<StyleTweetWrapper key={tweet.id}>
-										<TwitterTweetEmbed
-											tweetId={tweet.id}
-											options={{
-												conversation: "none",
-												width: 250,
-												cards: "hidden",
-												theme: "dark",
-											}}
-											placeholder={<StyledIcon icon={faSpinner} pulse />}
-										/>
-									</StyleTweetWrapper>
-								))}
-						</TweetsSection> */}
+						<TweetsSection>
+							{data.map((tweet) => (
+								<StyleTweetWrapper key={tweet.id}>
+									<TwitterTweetEmbed
+										tweetId={tweet.id}
+										options={{
+											conversation: "none",
+											width: 250,
+											cards: "hidden",
+											theme: "dark",
+										}}
+										placeholder={<StyledIcon icon={faSpinner} pulse />}
+									/>
+								</StyleTweetWrapper>
+							))}
+						</TweetsSection>
 					</Fragment>
 				) : (
 					<StyledIcon icon={faSpinner} pulse />
 				)}
 			</SocialPicks>
-			{/* <SocialPicks marginTop="0">
+			<SocialPicks marginTop="0">
 				{currentAllTweetsWhitelist?.length ? (
 					<Fragment>
 						<StyledIcon
@@ -727,7 +725,6 @@ export const DashBoard = () => {
 									currentPageForWhitelist * 5,
 									(currentPageForWhitelist + 1) * 5
 								)
-								.filter((tweet, index) => index <= 1)
 								.map((tweet) => (
 									<StyleTweetWrapper key={tweet.id}>
 										<TwitterTweetEmbed
@@ -747,7 +744,7 @@ export const DashBoard = () => {
 				) : (
 					<StyledIcon icon={faSpinner} pulse />
 				)}
-			</SocialPicks> */}
+			</SocialPicks>
 		</StyledMain>
 	);
 };
