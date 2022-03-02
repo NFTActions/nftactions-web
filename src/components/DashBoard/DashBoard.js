@@ -63,7 +63,6 @@ export const DashBoard = () => {
 				const data = responses.filter(
 					(response) => response?.data && Array.isArray(response?.data)
 				);
-				console.log(data);
 
 				const tokens = responses.map((response, index) => {
 					return {
@@ -71,7 +70,6 @@ export const DashBoard = () => {
 						name: filteredCollections[index].name,
 					};
 				});
-				console.log(tokens);
 				setCurrentNextTokens([...tokens]);
 
 				const arraysOfTweetsArray = [...data.map((data) => data.data)];
@@ -114,15 +112,10 @@ export const DashBoard = () => {
 		}, 0);
 		const totalTweetsCount = data?.[indexOfLongestArray].length * data.length;
 		let a = 0;
-		console.log(data);
-		console.log(totalTweetsCount);
 		let localTweetIndex = currentTweetIndex;
 		let localTweetArrayIndex = currentTweetArrayIndex;
 		const arraysOfTweetArrayLength = data.length;
 		let tweetsLength = data?.[localTweetArrayIndex]?.length;
-		console.log(tweetsLength);
-		console.log(localTweetIndex);
-		console.log(localTweetArrayIndex);
 		if (localTweetIndex >= tweetsLength) {
 			while (localTweetArrayIndex < arraysOfTweetArrayLength) {
 				localTweetArrayIndex =
@@ -133,30 +126,18 @@ export const DashBoard = () => {
 				}
 			}
 		}
-		console.log(`${localTweetArrayIndex},${localTweetIndex}`);
-		// if (
-		// 	localTweetArrayIndex === indexOfLongestArray &&
-		// 	localTweetIndex === data[indexOfLongestArray].length
-		// ) {
-		// 	setExit(totalTweetsCount);
-		// }
 		while (
 			tweetsSet.size < tweetsPerSection &&
 			localExit < totalTweetsCount &&
 			a < 20
 		) {
-			console.log({localExit});
 			a++;
 			while (localTweetIndex < tweetsLength) {
-				console.log({localTweetIndex});
 				for (
 					;
 					localTweetArrayIndex < arraysOfTweetArrayLength;
 					localTweetArrayIndex++
 				) {
-					console.log({localExit});
-					console.log({localTweetArrayIndex});
-					console.log(`${localTweetArrayIndex},${localTweetIndex}`);
 					if (!!data?.[localTweetArrayIndex]?.[localTweetIndex]) {
 						tweetsSet.add(data[localTweetArrayIndex][localTweetIndex]);
 						if (tweetsSet.size >= tweetsPerSection) {
@@ -216,26 +197,19 @@ export const DashBoard = () => {
 	};
 
 	const refreshTweets = async () => {
-		console.log("refresh");
-		console.log(exit);
 		const indexOfLongestArray = currentAllTweets.reduce((acc, arr, idx) => {
 			return arr.length > currentAllTweets[acc].length ? idx : acc;
 		}, 0);
 		const totalTweetsCount =
 			currentAllTweets[indexOfLongestArray].length * currentAllTweets.length;
-		console.log(totalTweetsCount);
 		if (exit >= totalTweetsCount) {
-			console.log("fetch");
 			if (currentNextTokens.some((token) => !!token)) {
 				const names = getCollectionNames(collections);
 				await Promise.all(
 					names.map(async (name) => {
-						console.log(name);
-
 						const token = currentNextTokens.find(
 							(tokenObject) => tokenObject.name === name
 						);
-						console.log(token);
 						if (token?.token) {
 							const response = await getTweetsByQuery(
 								name,
@@ -250,7 +224,6 @@ export const DashBoard = () => {
 						return {};
 					})
 				).then((responses) => {
-					console.log(responses);
 					const data = responses.filter(
 						(response) =>
 							response?.response?.data &&
@@ -263,10 +236,8 @@ export const DashBoard = () => {
 								name: response.name,
 							};
 						});
-						console.log(tokens);
 
 						setCurrentNextTokens([tokens]);
-						console.log(data);
 
 						const arraysOfTweetsArray = [
 							...data.map((data) => data.response.data),
