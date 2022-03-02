@@ -1,9 +1,9 @@
-import {faSpinner} from "@fortawesome/free-solid-svg-icons";
-import {useEffect, useState} from "react";
+import {faRetweet, faSpinner} from "@fortawesome/free-solid-svg-icons";
+import {Fragment, useEffect, useState} from "react";
 import {TwitterTweetEmbed} from "react-twitter-embed";
 import styled from "styled-components";
 
-import {getData, getTweets} from "../../Scripts/Axios/axiosRequests";
+import {getData, getTweetsByQuery} from "../../Scripts/Axios/axiosRequests";
 import {baseUrl} from "../../Scripts/Constants";
 import {StyledIcon} from "../../StyledComponents";
 import {SocialPicks, TradingPicks} from ".";
@@ -17,12 +17,32 @@ const StyleTweetWrapper = styled.div`
 	overflow: auto;
 `;
 
+const TweetsSection = styled.div`
+	flex-direction: row;
+	display: flex;
+`;
+
 export const DashBoard = () => {
-	const [data, setData] = useState({data: []});
-	const [whitelistMintTweets, setWhitelistMintTweets] = useState([]);
-	const [collections, setCollections] = useState([]);
 	const saleCountCutoff = 1;
 	const numberOfCollectionsToShow = 10;
+	const tweetsPerSection = 5;
+	// mock using 10
+	const tweetsPerFetch = 20;
+	const tweetsWhitelistPerFetch = 100;
+	const whiteListMint = "whitelist mint";
+	const [data, setData] = useState({data: []});
+	const [collections, setCollections] = useState([]);
+	const [tweetArrayIndex, setTweetArrayIndex] = useState(0);
+	const [tweetIndex, setTweetIndex] = useState(0);
+	const [exit, setExit] = useState(1);
+	const [currentPageForWhitelist, setCurrentPageForWhitelist] = useState(0);
+	const [currentAllTweetsWhitelist, setCurrentAllTweetsWhitelist] = useState(
+		[]
+	);
+	const [currentNextTokenWhitelist, setCurrentNextTokenWhitelist] =
+		useState("");
+	const [currentAllTweets, setCurrentAllTweets] = useState([]);
+	const [currentNextTokens, setCurrentNextTokens] = useState("");
 
 	useEffect(() => {
 		async function fetchData() {
@@ -35,47 +55,214 @@ export const DashBoard = () => {
 				.slice(0, numberOfCollectionsToShow);
 			setCollections(filteredCollections);
 
-			const names = filteredCollections
-				.slice(0, 5)
-				.map((collection) => collection.name);
+			const names = getCollectionNames(filteredCollections);
 			// mock tweets will be placed here
 			await Promise.all(
-				names.map((name) =>
-					getTweets(
-						`/2/tweets/search/recent?query=${name}&tweet.fields=author_id,created_at,entities,geo,in_reply_to_user_id,lang,possibly_sensitive,referenced_tweets,source`
-					)
-				)
+				names.map((name) => getTweetsByQuery(name, tweetsPerFetch))
 			).then((responses) => {
 				const data = responses.filter(
 					(response) => response?.data && Array.isArray(response?.data)
 				);
-				let tweetsSet = new Set();
-				while (tweetsSet.size < 5) {
-					let tweetIndex = 0;
-					while (tweetIndex < data[0].data.length) {
-						for (
-							let tweetArrayIndex = 0;
-							tweetArrayIndex < data.length;
-							tweetArrayIndex++
-						) {
-							tweetsSet.add(data[tweetArrayIndex].data[tweetIndex]);
-							if (tweetsSet.size >= 5) break;
-						}
-						tweetIndex++;
-						if (tweetsSet.size >= 5) break;
-					}
-				}
+
+				const tokens = responses.map((response, index) => {
+					return {
+						token: response.meta?.next_token,
+						name: filteredCollections[index].name,
+					};
+				});
+				setCurrentNextTokens([...tokens]);
+
+				const arraysOfTweetsArray = [...data.map((data) => data.data)];
+
+				setCurrentAllTweets(arraysOfTweetsArray);
+				const tweetsSet = removeTweetDuplicates(arraysOfTweetsArray);
+
 				setData([...tweetsSet]);
 			});
 
-			const whitelistMintTweetsResponse = await getTweets(
-				`/2/tweets/search/recent?query="whitelist mint"&tweet.fields=author_id,created_at,entities,geo,in_reply_to_user_id,lang,possibly_sensitive,referenced_tweets,source`
+			const whitelistMintTweetsResponse = await getTweetsByQuery(
+				whiteListMint,
+				tweetsWhitelistPerFetch
 			);
-			setWhitelistMintTweets([...whitelistMintTweetsResponse.data.slice(0, 5)]);
+			setCurrentAllTweetsWhitelist([...whitelistMintTweetsResponse.data]);
+			setCurrentNextTokenWhitelist(
+				whitelistMintTweetsResponse.meta?.next_token
+			);
 		}
 
 		fetchData();
 	}, []);
+
+	const getCollectionNames = (currentCollections) => {
+		return currentCollections
+			.slice(0, numberOfCollectionsToShow)
+			.map((collection) => collection.name);
+	};
+
+	const removeTweetDuplicates = (
+		data,
+		currentExit = exit,
+		currentTweetIndex = tweetIndex,
+		currentTweetArrayIndex = tweetArrayIndex
+	) => {
+		let tweetsSet = new Set();
+		let localExit = currentExit;
+		const indexOfLongestArray = data.reduce((acc, arr, idx) => {
+			return arr.length > data[acc].length ? idx : acc;
+		}, 0);
+		const totalTweetsCount = data?.[indexOfLongestArray].length * data.length;
+		let a = 0;
+		let localTweetIndex = currentTweetIndex;
+		let localTweetArrayIndex = currentTweetArrayIndex;
+		const arraysOfTweetArrayLength = data.length;
+		let tweetsLength = data?.[localTweetArrayIndex]?.length;
+		if (localTweetIndex >= tweetsLength) {
+			while (localTweetArrayIndex < arraysOfTweetArrayLength) {
+				localTweetArrayIndex =
+					(localTweetArrayIndex + 1) % arraysOfTweetArrayLength;
+				if (!!data?.[localTweetArrayIndex]?.[localTweetIndex]) {
+					tweetsLength = data?.[localTweetArrayIndex]?.length;
+					break;
+				}
+			}
+		}
+		while (
+			tweetsSet.size < tweetsPerSection &&
+			localExit < totalTweetsCount &&
+			a < 20
+		) {
+			a++;
+			while (localTweetIndex < tweetsLength) {
+				for (
+					;
+					localTweetArrayIndex < arraysOfTweetArrayLength;
+					localTweetArrayIndex++
+				) {
+					if (!!data?.[localTweetArrayIndex]?.[localTweetIndex]) {
+						tweetsSet.add(data[localTweetArrayIndex][localTweetIndex]);
+						if (tweetsSet.size >= tweetsPerSection) {
+							setTweetIndex(
+								localTweetArrayIndex === arraysOfTweetArrayLength - 1
+									? localTweetIndex + 1
+									: localTweetIndex
+							);
+
+							setTweetArrayIndex(
+								(localTweetArrayIndex + 1) % arraysOfTweetArrayLength
+							);
+
+							setExit(localExit + 1);
+							break;
+						}
+					}
+
+					localExit++;
+				}
+				if (tweetsSet.size >= tweetsPerSection) {
+					break;
+				} else {
+					localTweetIndex++;
+					localTweetArrayIndex = 0;
+				}
+			}
+		}
+		if (tweetsSet.size < tweetsPerSection) {
+			setExit(localExit);
+		}
+		return tweetsSet;
+	};
+
+	const refreshWhitelistTweets = async () => {
+		if (
+			(currentPageForWhitelist + 1) * tweetsPerSection >=
+			tweetsWhitelistPerFetch
+		) {
+			if (currentNextTokenWhitelist) {
+				const whitelistMintTweetsResponse = await getTweetsByQuery(
+					whiteListMint,
+					tweetsWhitelistPerFetch,
+					currentNextTokenWhitelist
+				);
+				setCurrentAllTweetsWhitelist([...whitelistMintTweetsResponse.data]);
+				setCurrentNextTokenWhitelist(
+					whitelistMintTweetsResponse.meta?.next_token
+				);
+				setCurrentPageForWhitelist(currentPageForWhitelist + 1);
+			} else {
+				console.log("There is no more tweets");
+			}
+		} else {
+			setCurrentPageForWhitelist(currentPageForWhitelist + 1);
+		}
+	};
+
+	const refreshTweets = async () => {
+		const indexOfLongestArray = currentAllTweets.reduce((acc, arr, idx) => {
+			return arr.length > currentAllTweets[acc].length ? idx : acc;
+		}, 0);
+		const totalTweetsCount =
+			currentAllTweets[indexOfLongestArray].length * currentAllTweets.length;
+		if (exit >= totalTweetsCount) {
+			if (currentNextTokens.some((token) => !!token)) {
+				const names = getCollectionNames(collections);
+				await Promise.all(
+					names.map(async (name) => {
+						const token = currentNextTokens.find(
+							(tokenObject) => tokenObject.name === name
+						);
+						if (token?.token) {
+							const response = await getTweetsByQuery(
+								name,
+								tweetsPerFetch,
+								token.token
+							);
+							return {
+								response,
+								name,
+							};
+						}
+						return {};
+					})
+				).then((responses) => {
+					const data = responses.filter(
+						(response) =>
+							response?.response?.data &&
+							Array.isArray(response?.response?.data)
+					);
+					if (data?.length) {
+						const tokens = responses.map((response) => {
+							return {
+								token: response?.response?.meta?.next_token,
+								name: response.name,
+							};
+						});
+
+						setCurrentNextTokens([tokens]);
+
+						const arraysOfTweetsArray = [
+							...data.map((data) => data.response.data),
+						];
+
+						setCurrentAllTweets(arraysOfTweetsArray);
+
+						const tweetsSet = removeTweetDuplicates(
+							arraysOfTweetsArray,
+							0,
+							0,
+							0
+						);
+						setData([...tweetsSet]);
+					} else {
+						console.log("There is no more tweets");
+					}
+				});
+			} else {
+			}
+		} else {
+			const tweetsSet = removeTweetDuplicates(currentAllTweets);
+			setData([...tweetsSet]);
+		}
+	};
 
 	return (
 		<StyledMain>
@@ -86,42 +273,63 @@ export const DashBoard = () => {
 			)}
 			<SocialPicks marginTop="30px">
 				{data?.length ? (
-					data
-						.filter((tweet, index) => index <= 4)
-						.map((tweet) => (
-							<StyleTweetWrapper key={tweet.id}>
-								<TwitterTweetEmbed
-									tweetId={tweet.id}
-									options={{
-										conversation: "none",
-										width: 250,
-										cards: "hidden",
-										theme: "dark",
-									}}
-									placeholder={<StyledIcon icon={faSpinner} pulse />}
-								/>
-							</StyleTweetWrapper>
-						))
+					<Fragment>
+						<StyledIcon
+							icon={faRetweet}
+							alignself="flex-end"
+							onClick={refreshTweets}
+						/>
+						<TweetsSection>
+							{data.map((tweet) => (
+								<StyleTweetWrapper key={tweet.id}>
+									<TwitterTweetEmbed
+										tweetId={tweet.id}
+										options={{
+											conversation: "none",
+											width: 250,
+											cards: "hidden",
+											theme: "dark",
+										}}
+										placeholder={<StyledIcon icon={faSpinner} pulse />}
+									/>
+								</StyleTweetWrapper>
+							))}
+						</TweetsSection>
+					</Fragment>
 				) : (
 					<StyledIcon icon={faSpinner} pulse />
 				)}
 			</SocialPicks>
 			<SocialPicks marginTop="0">
-				{whitelistMintTweets?.length ? (
-					whitelistMintTweets.map((tweet) => (
-						<StyleTweetWrapper key={tweet.id}>
-							<TwitterTweetEmbed
-								tweetId={tweet.id}
-								options={{
-									conversation: "none",
-									width: 250,
-									cards: "hidden",
-									theme: "dark",
-								}}
-								placeholder={<StyledIcon icon={faSpinner} pulse />}
-							/>
-						</StyleTweetWrapper>
-					))
+				{currentAllTweetsWhitelist?.length ? (
+					<Fragment>
+						<StyledIcon
+							icon={faRetweet}
+							alignself="flex-end"
+							onClick={refreshWhitelistTweets}
+						/>
+						<TweetsSection>
+							{currentAllTweetsWhitelist
+								.slice(
+									currentPageForWhitelist * tweetsPerSection,
+									(currentPageForWhitelist + 1) * tweetsPerSection
+								)
+								.map((tweet) => (
+									<StyleTweetWrapper key={tweet.id}>
+										<TwitterTweetEmbed
+											tweetId={tweet.id}
+											options={{
+												conversation: "none",
+												width: 250,
+												cards: "hidden",
+												theme: "dark",
+											}}
+											placeholder={<StyledIcon icon={faSpinner} pulse />}
+										/>
+									</StyleTweetWrapper>
+								))}
+						</TweetsSection>
+					</Fragment>
 				) : (
 					<StyledIcon icon={faSpinner} pulse />
 				)}
